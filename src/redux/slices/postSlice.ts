@@ -14,14 +14,17 @@ const initialState = {
   status: 'idle',
 } as PostState
 
-export const fetchPost = createAsyncThunk('posts/fetchPost', async (url: string, { dispatch, getState }) => {
-  try {
-    const { data } = await axios.get(`${url}`)
-    return data
-  } catch (error) {
-    console.log(error)
+export const fetchPost = createAsyncThunk(
+  'posts/fetchPost',
+  async (url: string, { dispatch, getState, rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${url}`)
+      return data
+    } catch (error) {
+      return rejectWithValue(error)
+    }
   }
-})
+)
 const postSlice = createSlice({
   name: 'posts',
   initialState,
